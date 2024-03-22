@@ -14,7 +14,7 @@ LABEL tags="Genomics"
 LABEL maintainer="Finlay Maguire <finlaymaguire@gmail.com>"
 
 # get some system essentials
-RUN apt-get update && apt-get install -y wget parallel && conda init bash procps
+RUN apt-get update && apt-get install -y wget parallel procps && conda init bash
 
 # get latest version of the repo
 RUN git clone https://github.com/arpcard/rgi

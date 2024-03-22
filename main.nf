@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
-params.reads = "$baseDir/in"
-params.outdir = "$baseDir/out"
+params.input = "$baseDir/in"
+params.output = "$baseDir/out"
 params.gene_result_column = 16
 params.gzip = false
 
@@ -27,7 +27,7 @@ process CSV{
     val tables
 
     output:
-    path 'card_results.csv'
+    path 'rgi_results.csv'
 
     exec:
     gene_list = []
@@ -66,7 +66,7 @@ process CSV{
     headers = gene_list.join(',') + "\n"
     result_table = headers + result_table
 
-    csv_file = task.workDir.resolve('card_results.csv')
+    csv_file = task.workDir.resolve('rgi_results.csv')
     csv_file.text = result_table
 }
 
@@ -82,7 +82,7 @@ process ZIP{
 
     """
     current_date=\$(date +"%Y-%m-%d")
-    outfile="mefinder_\${current_date}.tar.gz"
+    outfile="rgi_\${current_date}.tar.gz"
     tar -chzf \${outfile} ${files.join(' ')} $csv
     """
 }
@@ -91,16 +91,10 @@ workflow {
     reads_ch = Channel
         .fromPath("$params.input/*{fas,gz,fasta,fsa,fsa.gz,fas.gz}")
     RGI_MAIN(reads_ch)
-    create_csv(RGI_MAIN.out.collect())
+    CSV(RGI_MAIN.out.collect())
 
     if (params.gzip){
-        all_results = results.json
-                .mix(results.txt)
-                .mix(results.tsv)
-                .mix(results.plasmid_seq)
-                .mix(results.genome_seq)
-                .collect()
-        ZIP(all_results,CSV.out)
+        ZIP(RGI_MAIN.out.collect(),CSV.out)
     }
 
 }
