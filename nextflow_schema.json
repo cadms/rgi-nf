@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://raw.githubusercontent.com/cadms/ksnp-nf/nextflow_schema.json",
+  "title": "KSNP pipeline parameters",
+  "description": "Nextflow pipeline to run KSNP 4.1",
+  "type": "object",
+  "definitions": {
+      "required_parameters": {
+          "title": "Required Parameters",
+          "type": "object",
+          "fa_icon": "fas fa-terminal",
+          "description": "Define where the pipeline should find input data and save output data.",
+          "help_text": "",
+          "properties": {
+              "in": {
+                  "type": "string",
+                  "format": "file-path",
+                  "mimetype": "text",
+                  "description": "Input folder containing fasta files or gzipped fasta files.",
+                  "fa_icon": "fas fa-file-alt",
+                  "header": "### Input directory or bucket location"
+              },
+              "outdir": {
+                  "type": "string",
+                  "description": "Results output directory",
+                  "fa_icon": "fas fa-file-archive",
+                  "header": "### Output dir or bucket"
+              }
+          }
+      },
+      "optional_parameters": {
+          "title": "Optional Parameters",
+          "type": "object",
+          "description": "Optional kSNP params",
+          "default": "",
+          "properties": {
+              "k": {
+                  "type": "string",
+                  "description": "Length of kmer containing the SNP. If not provided kchooser will be run.",
+                  "fa_icon": "fas fa-file-archive"
+              },
+              "annotate": {
+                  "type": "string",
+                  "description": "List of names of genomes to use for annotation (see next section). Default is no annotation.",
+                  "fa_icon": "fas fa-file-archive"
+              },
+              "min_frac": {
+                  "type": "boolean",
+                  "description": "Calculate a tree based on only SNP loci occurring in at least this fraction of genomes.",
+                  "fa_icon": "fas fa-level-up"
+              },
+              "core": {
+                  "type": "boolean",
+                  "description": "Calculate a set of loci and a tree based on only the SNPs found in all genomes.",
+                  "fa_icon": "fas fa-level-up"
+              },
+              "NJ": {
+                  "type": "string",
+                  "description": "Calculates an NJ tree. Default is to not calculate an NJ tree.",
+                  "fa_icon": "fas fa-file-alt"
+              },
+              "ML": {
+                  "type": "string",
+                  "description": "Calculates an ML tree. Default is to not calculate an ML tree.",
+                  "fa_icon": "fas fa-font"
+              }
+          }
+      }
+  },
+  "allOf": [
+      {
+          "$ref": "#/definitions/input_parameters"
+      },
+      {
+          "$ref": "#/definitions/optional_parameters"
+      }
+  ]
+}
