@@ -8,15 +8,24 @@ process RGI_MAIN{
     publishDir params.output, mode: 'copy'
 
     input:
-    path sequence_file
+    path fasta
 
     output:
-    path "${sequence_file}.tsv"
+    path "*.tsv"
+
+    script:
+    def prefix = fasta.getSimpleName()
+    def is_compressed = fasta.getName().endsWith(".gz") ? true : false
+    def fasta_name = fasta.getName().replace(".gz", "")
 
     """
-    rgi main -i $sequence_file \
-        -o ${sequence_file}.out --input_type contig --clean > ${sequence_file}.log 2>&1
-    mv '$sequence_file'.out.txt '$sequence_file'.tsv
+    if [ "$is_compressed" == "true" ]; then
+        gzip -c -d $fasta > $fasta_name
+    fi
+
+    rgi main -i $fasta \
+        -o ${fasta_name}.out --input_type contig --clean > ${fasta_name}.log 2>&1
+    mv '$fasta_name'.out.txt '$fasta_name'.tsv
     """
 }
 
