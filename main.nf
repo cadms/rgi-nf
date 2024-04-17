@@ -8,13 +8,11 @@ params.loose = false
 params.nudge = false
 params.low_quality = false
 
-options.args = []
-if (params.type) options.args.push("-t $params.type")
-if (params.loose) options.args.push("--include_loose")
-if (params.nudge) options.args.push("--include_nudge")
-if (params.low_quality) options.args.push("--low_quality")
-
-options.args.join(' ').replaceAll("\\s{2,}", " ").trim()
+args = []
+if (params.type) args.push("-t $params.type")
+if (params.loose) args.push("--include_loose")
+if (params.nudge) args.push("--include_nudge")
+if (params.low_quality) args.push("--low_quality")
 
 process RGI_MAIN{
     publishDir params.output, mode: 'copy'
@@ -36,7 +34,7 @@ process RGI_MAIN{
     fi
 
     rgi main -i $fasta \
-        -o ${fasta_name}.out $options.args > ${fasta_name}.log 2>&1
+        -o ${fasta_name}.out ${args.join(' ')} > ${fasta_name}.log 2>&1
     mv '$fasta_name'.out.txt '$fasta_name'.tsv
     """
 }

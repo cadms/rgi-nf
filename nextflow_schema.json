@@ -50,7 +50,7 @@
                     "header": "### Read type"
                 },
                 "loose": {
-                    "type": "string",
+                    "type": "boolean",
                     "description": "Include loose hits in addition to strict and perfect hits (default: False)",
                     "fa_icon": "fas fa-shopping-basket",
                     "header": "### Include Loose"
