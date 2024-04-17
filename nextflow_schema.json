@@ -37,7 +37,35 @@
                 "gzip": {
                     "type": "boolean",
                     "description": "If set to true results will be gzipped for easy downloading. ",
-                    "fa_icon": "fas fa-file-archive"
+                    "fa_icon": "fas fa-file-archive",
+                    "header": "### GZIP"
+                },
+                "type": {
+                    "type": "string",
+                    "format": "file-path",
+                    "mimetype": "text",
+                    "description": "Specify input type contig or protein (default = contig)",
+                    "fa_icon": "fas fa-file-alt",
+                    "deault": "contig",
+                    "header": "### Read type"
+                },
+                "loose": {
+                    "type": "string",
+                    "description": "Include loose hits in addition to strict and perfect hits (default: False)",
+                    "fa_icon": "fas fa-shopping-basket",
+                    "header": "### Include Loose"
+                },
+                "nudge": {
+                    "type": "boolean",
+                    "description": "include hits nudged from loose to strict hits (default: False)",
+                    "fa_icon": "fas fa-level-up",
+                    "header": "### Include Nudge"
+                },
+                "low_quality": {
+                    "type": "boolean",
+                    "description": "Use for short contigs to predict partial genes (default: False)",
+                    "fa_icon": "fas fa-search-plus ",
+                    "header": "### Include Low Quality"
                 }
             }
         }

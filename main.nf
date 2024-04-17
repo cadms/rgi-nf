@@ -3,6 +3,18 @@ params.input = "$baseDir/in"
 params.output = "$baseDir/out"
 params.gene_result_column = 16
 params.gzip = false
+params.type = "contig"
+params.loose = false
+params.nudge = false
+params.low_quality = false
+
+options.args = []
+if (params.type) options.args.push("-t $params.type")
+if (params.loose) options.args.push("--include_loose")
+if (params.nudge) options.args.push("--include_nudge")
+if (params.low_quality) options.args.push("--low_quality")
+
+options.args.join(' ').replaceAll("\\s{2,}", " ").trim()
 
 process RGI_MAIN{
     publishDir params.output, mode: 'copy'
@@ -24,7 +36,7 @@ process RGI_MAIN{
     fi
 
     rgi main -i $fasta \
-        -o ${fasta_name}.out --input_type contig --clean > ${fasta_name}.log 2>&1
+        -o ${fasta_name}.out $options.args > ${fasta_name}.log 2>&1
     mv '$fasta_name'.out.txt '$fasta_name'.tsv
     """
 }
